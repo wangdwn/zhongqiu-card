@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌕 中秋音乐卡 · 月圆人团圆</title>
+<meta property="og:title" content="🌕 中秋音乐卡 · 月圆人团圆">
+<meta property="og:description" content="海上生明月，天涯共此时。点开有音乐和祝福。">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://wangdwn.github.io/zhongqiu-card/cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    background:#0b1026;
+    font-family:"PingFang SC","Microsoft YaHei",serif;
+    overflow:hidden;
+  }
+  .card {
+    position:relative; width:min(420px,92vw); height:min(720px,94vh);
+    border-radius:24px; overflow:hidden;
+    background:linear-gradient(180deg,#0a0f2e 0%,#14204d 45%,#1b2f66 70%,#2a4480 100%);
+    box-shadow:0 30px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(255,220,150,.15);
+    cursor:pointer;
+  }
+  /* ---- 星空 ---- */
+  .stars { position:absolute; inset:0; }
+  .star { position:absolute; background:#fff; border-radius:50%; opacity:.8; animation:twinkle 3s ease-in-out infinite; }
+  @keyframes twinkle { 0%,100%{opacity:.2; transform:scale(.8);} 50%{opacity:.95; transform:scale(1.15);} }
+  /* ---- 月亮 ---- */
+  .moon {
+    position:absolute; top:9%; left:50%; transform:translateX(-50%);
+    width:150px; height:150px; border-radius:50%;
+    background:radial-gradient(circle at 35% 35%, #fffbe6, #ffe9a0 55%, #f7c873 100%);
+    box-shadow:0 0 40px rgba(255,230,150,.9), 0 0 120px rgba(255,210,120,.55), 0 0 220px rgba(255,200,100,.3);
+    animation:breathe 6s ease-in-out infinite;
+  }
+  @keyframes breathe { 0%,100%{transform:translateX(-50%) scale(1);} 50%{transform:translateX(-50%) scale(1.045);} }
+  .crater { position:absolute; border-radius:50%; background:rgba(220,180,110,.35); }
+  /* ---- 云 ---- */
+  .cloud { position:absolute; filter:blur(6px); opacity:.5; animation:drift linear infinite; }
+  @keyframes drift { from{transform:translateX(-140px);} to{transform:translateX(560px);} }
+  /* ---- 桂花树与玉兔剪影 ---- */
+  .scene { position:absolute; bottom:0; left:0; width:100%; height:44%; pointer-events:none; }
+  /* ---- 水面 ---- */
+  .water { position:absolute; bottom:0; width:100%; height:20%;
+    background:linear-gradient(180deg,rgba(60,110,180,.55),rgba(20,40,90,.9));
+    overflow:hidden; }
+  .moonlight { position:absolute; top:0; left:50%; width:90px; height:200%; transform:translateX(-50%);
+    background:linear-gradient(180deg, rgba(255,235,160,.85), rgba(255,220,120,0));
+    filter:blur(4px); animation:shimmer 3s ease-in-out infinite; }
+  @keyframes shimmer { 0%,100%{opacity:.5;} 50%{opacity:.95;} }
+  .wave { position:absolute; width:150%; height:2px; background:rgba(255,240,180,.35); border-radius:50%; left:-25%; animation:sway 5s ease-in-out infinite; }
+  @keyframes sway { 0%,100%{transform:translateX(-14px);} 50%{transform:translateX(14px);} }
+  /* ---- 灯笼 ---- */
+  .lantern { position:absolute; width:34px; height:44px; border-radius:50% 50% 46% 46%;
+    background:radial-gradient(circle at 50% 40%, #ff6b4a, #d3231a 80%);
+    box-shadow:0 0 18px rgba(255,90,60,.75); animation:swing 4s ease-in-out infinite; transform-origin:top center; }
+  .lantern::before { content:""; position:absolute; top:-12px; left:50%; width:2px; height:12px; background:#8a5a2b; transform:translateX(-50%); }
+  .lantern::after { content:""; position:absolute; bottom:-7px; left:50%; width:10px; height:7px; background:#ffcf6e; border-radius:2px; transform:translateX(-50%); }
+  @keyframes swing { 0%,100%{transform:rotate(-6deg);} 50%{transform:rotate(6deg);} }
+  /* ---- 漂浮孔明灯 ---- */
+  .kongming { position:absolute; width:12px; height:16px; border-radius:50% 50% 40% 40%;
+    background:radial-gradient(circle at 50% 60%, #ffd97a, #ff9a3d);
+    box-shadow:0 0 12px rgba(255,180,90,.9); opacity:.85;
+    animation:rise 14s linear infinite; }
+  @keyframes rise { from{transform:translateY(40px); opacity:0;} 15%{opacity:.9;} to{transform:translateY(-560px); opacity:0;} }
+  /* ---- 桂花飘落 ---- */
+  .petal { position:absolute; width:7px; height:7px; border-radius:50% 0 50% 50%;
+    background:radial-gradient(circle,#ffd97a,#e8a92e); opacity:.9;
+    animation:fall linear infinite; }
+  @keyframes fall { from{transform:translateY(-30px) rotate(0) translateX(0);} to{transform:translateY(560px) rotate(300deg) translateX(-60px);} }
+  /* ---- 文字 ---- */
+  .text-wrap { position:absolute; top:31%; width:100%; text-align:center; color:#fff; pointer-events:none; }
+  .title { font-size:44px; letter-spacing:10px; font-weight:700;
+    background:linear-gradient(180deg,#fff6d8,#ffd98a);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    text-shadow:0 0 24px rgba(255,220,140,.35);
+    opacity:0; animation:fadeUp 1.4s ease .3s forwards; }
+  .sub { margin-top:10px; font-size:15px; letter-spacing:4px; color:#ffeec2; opacity:0; animation:fadeUp 1.4s ease .9s forwards; }
+  .verse { position:absolute; bottom:23%; width:100%; text-align:center; color:#fdf3d3;
+    font-size:14.5px; line-height:2; letter-spacing:2px; opacity:0; animation:fadeUp 1.6s ease 1.6s forwards; }
+  .bless { position:absolute; bottom:8%; width:100%; text-align:center; color:#fff;
+    font-size:13px; letter-spacing:2px; opacity:0; animation:fadeUp 1.6s ease 2.4s forwards; }
+  .bless .from { display:block; margin-top:6px; color:#ffd98a; font-size:12px; }
+  @keyframes fadeUp { from{opacity:0; transform:translateY(22px);} to{opacity:1; transform:translateY(0);} }
+  /* ---- 音乐按钮 ---- */
+  .music-btn { position:absolute; top:16px; right:16px; width:44px; height:44px; border-radius:50%;
+    border:1px solid rgba(255,220,150,.5); background:rgba(10,15,40,.55); backdrop-filter:blur(4px);
+    color:#ffd98a; font-size:19px; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:9; }
+  .music-btn.playing { animation:spin 4s linear infinite; }
+  @keyframes spin { to{transform:rotate(360deg);} }
+  .hint { position:absolute; bottom:10px; width:100%; text-align:center; color:rgba(255,240,200,.45); font-size:10px; letter-spacing:2px; }
+</style>
+</head>
+<body>
+<div class="card" id="card">
+  <div class="stars" id="stars"></div>
+
+  <div class="moon">
+    <div class="crater" style="width:22px;height:22px;top:28%;left:24%"></div>
+    <div class="crater" style="width:14px;height:14px;top:58%;left:58%"></div>
+    <div class="crater" style="width:10px;height:10px;top:40%;left:60%"></div>
+  </div>
+
+  <div class="cloud" style="top:16%; width:130px; height:26px; background:#4a5a8f; animation-duration:38s;"></div>
+  <div class="cloud" style="top:24%; width:90px; height:18px; background:#3a4a7d; animation-duration:52s; animation-delay:-20s;"></div>
+  <div class="cloud" style="top:12%; width:110px; height:20px; background:#556aa0; animation-duration:64s; animation-delay:-40s;"></div>
+
+  <div class="text-wrap">
+    <div class="title">中秋快乐</div>
+    <div class="sub">花好月圆 · 阖家团圆</div>
+  </div>
+
+  <div class="verse">海上生明月，天涯共此时<br>愿你所念之人，皆平安喜乐</div>
+
+  <div class="bless">祝春秋中秋快乐，月圆事圆人更圆<span class="from">—— 海蓝蓝 敬上 🌊</span></div>
+
+  <!-- 剪影场景：桂花树 + 玉兔 -->
+  <svg class="scene" viewBox="0 0 420 200" preserveAspectRatio="xMidYMax slice">
+    <path d="M0,180 Q100,160 210,172 T420,168 L420,200 L0,200 Z" fill="#0a0e24"/>
+    <!-- 树 -->
+    <g fill="#0a0e24">
+      <path d="M60,200 L64,120 Q60,100 42,88 Q58,92 66,104 Q68,84 58,64 Q72,78 76,100 Q82,86 98,80 Q84,96 80,112 Q84,150 82,200 Z"/>
+      <circle cx="52" cy="72" r="26"/><circle cx="86" cy="62" r="30"/><circle cx="70" cy="50" r="24"/><circle cx="100" cy="84" r="20"/>
+    </g>
+    <g fill="#e8b23e">
+      <circle cx="58" cy="66" r="2.4"/><circle cx="90" cy="58" r="2.4"/><circle cx="72" cy="46" r="2.4"/><circle cx="98" cy="80" r="2.4"/><circle cx="48" cy="82" r="2.4"/><circle cx="80" cy="70" r="2.4"/>
+    </g>
+    <!-- 玉兔 -->
+    <g fill="#0a0e24">
+      <ellipse cx="300" cy="180" rx="26" ry="16"/>
+      <circle cx="322" cy="164" r="11"/>
+      <ellipse cx="318" cy="146" rx="3.6" ry="12" transform="rotate(-14 318 146)"/>
+      <ellipse cx="328" cy="146" rx="3.6" ry="12" transform="rotate(10 328 146)"/>
+      <circle cx="200" cy="182" rx="20" ry="13"/>
+      <circle cx="216" cy="170" r="8.5"/>
+      <ellipse cx="213" cy="157" rx="2.8" ry="9" transform="rotate(-12 213 157)"/>
+      <ellipse cx="221" cy="157" rx="2.8" ry="9" transform="rotate(9 221 157)"/>
+    </g>
+    <circle cx="325" cy="162" r="1.2" fill="#ffd98a"/>
+  </svg>
+
+  <div class="water">
+    <div class="moonlight"></div>
+    <div class="wave" style="top:30%; animation-delay:0s;"></div>
+    <div class="wave" style="top:55%; animation-delay:1.2s;"></div>
+    <div class="wave" style="top:75%; animation-delay:2.4s;"></div>
+  </div>
+
+  <div class="lantern" style="top:38%; left:8%;"></div>
+  <div class="lantern" style="top:44%; right:9%; animation-delay:-2s;"></div>
+
+  <div class="kongming" style="left:20%; animation-delay:0s;"></div>
+  <div class="kongming" style="left:70%; animation-delay:6s;"></div>
+  <div class="kongming" style="left:45%; animation-delay:10s;"></div>
+
+  <div id="petals"></div>
+
+  <button class="music-btn" id="musicBtn" title="播放音乐">🎵</button>
+  <div class="hint">轻点卡片任意处 · 开启音乐与祝福</div>
+</div>
+
+<script>
+/* ---------- 星星与桂花 ---------- */
+(function(){
+  const stars = document.getElementById('stars');
+  for (let i=0;i<70;i++){
+    const s=document.createElement('div'); s.className='star';
+    const z=Math.random()*2+1;
+    s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*55}%;width:${z}px;height:${z}px;animation-delay:${Math.random()*3}s;animation-duration:${2+Math.random()*3}s`;
+    stars.appendChild(s);
+  }
+  const petals=document.getElementById('petals');
+  for (let i=0;i<14;i++){
+    const p=document.createElement('div'); p.className='petal';
+    p.style.cssText=`left:${5+Math.random()*40}%;top:${20+Math.random()*40}%;animation-duration:${7+Math.random()*7}s;animation-delay:${Math.random()*8}s`;
+    petals.appendChild(p);
+  }
+})();
+
+/* ---------- 音乐：月亮代表我的心（Web Audio 合成，无需联网） ---------- */
+const NOTE = {G3:196, A3:220, B3:246.9, C4:261.6, D4:293.7, E4:329.6, F4:349.2, G4:392, A4:440, B4:493.9, C5:523.3, D5:587.3, E5:659.3};
+// 主旋律（你问我爱你有多深 / 月亮代表我的心片段）
+const MELODY = [
+  ['E4',.5],['G4',.5],['A4',.5],['C5',1],['A4',.5],['G4',.5],
+  ['E4',.5],['G4',.5],['E4',.5],['D4',1.5],
+  ['C4',.5],['E4',.5],['G4',.5],['A4',1],['G4',.5],['E4',.5],
+  ['D4',.5],['E4',.5],['C4',.5],['A3',1.5],
+  ['A3',.5],['C4',.5],['D4',.5],['E4',1],['D4',.5],['C4',.5],
+  ['A3',.5],['B3',.5],['C4',1.5],
+  ['E4',.5],['D4',.5],['C4',.5],['A3',1],['G3',.5],['A3',.5],
+  ['C4',2]
+];
+const PLAY_DURATION = 34; // 单曲循环前的休止间隔（秒）
+
+let audioCtx=null, playing=false, loopTimer=null;
+const btn=document.getElementById('musicBtn'), card=document.getElementById('card');
+
+function playSong(){
+  if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+  const now=audioCtx.currentTime+0.15; let t=now;
+  MELODY.forEach(([n,d])=>{
+    const dur=d*0.62;
+    const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+    o.type='sine'; o.frequency.value=NOTE[n];
+    // 轻微第二泛音，让音色更柔
+    const o2=audioCtx.createOscillator(), g2=audioCtx.createGain();
+    o2.type='triangle'; o2.frequency.value=NOTE[n]*2; g2.gain.value=.08;
+    g.gain.setValueAtTime(0,t);
+    g.gain.linearRampToValueAtTime(.32,t+.05);
+    g.gain.exponentialRampToValueAtTime(.001,t+dur);
+    o.connect(g); o2.connect(g2); g2.connect(g);
+    g.connect(audioCtx.destination);
+    o.start(t); o.stop(t+dur+.05); o2.start(t); o2.stop(t+dur+.05);
+    t+=d*0.66;
+  });
+  loopTimer=setTimeout(playSong, PLAY_DURATION*1000);
+}
+
+function toggleMusic(){
+  if(playing){
+    playing=false; clearTimeout(loopTimer);
+    if(audioCtx) audioCtx.suspend();
+    btn.textContent='🎵'; btn.classList.remove('playing');
+  }else{
+    playing=true;
+    if(audioCtx) audioCtx.resume();
+    playSong();
+    btn.textContent='🎶'; btn.classList.add('playing');
+  }
+}
+btn.addEventListener('click', e=>{ e.stopPropagation(); toggleMusic(); });
+card.addEventListener('click', ()=>{ if(!playing) toggleMusic(); });
+</script>
+</body>
+</html>
